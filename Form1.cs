@@ -106,11 +106,10 @@ namespace CRUDMahasiswaADO
             }
         }
 
-
         // ───────────────────────────────────────────
-        // UPDATE DATA
+        // INSERT DATA
         // ───────────────────────────────────────────
-        private void btnUpdate_Click(object sender, EventArgs e)
+        private void btnInsert_Click(object sender, EventArgs e)
         {
             try
             {
@@ -119,13 +118,38 @@ namespace CRUDMahasiswaADO
                     conn.Open();
                 }
 
-                string query = @"UPDATE Mahasiswa
-                                 SET Nama         = @Nama,
-                                     JenisKelamin = @JK,
-                                     TanggalLahir = @TanggalLahir,
-                                     Alamat       = @Alamat,
-                                     KodeProdi    = @KodeProdi
-                                 WHERE NIM = @NIM";
+                if (txtNIM.Text == "")
+                {
+                    MessageBox.Show("NIM harus diisi");
+                    txtNIM.Focus();
+                    return;
+                }
+
+                if (txtNama.Text == "")
+                {
+                    MessageBox.Show("Nama harus diisi");
+                    txtNama.Focus();
+                    return;
+                }
+
+                if (cmbJK.Text == "")
+                {
+                    MessageBox.Show("Jenis Kelamin harus dipilih");
+                    cmbJK.Focus();
+                    return;
+                }
+
+                if (txtKodeProdi.Text == "")
+                {
+                    MessageBox.Show("Kode Prodi harus diisi");
+                    txtKodeProdi.Focus();
+                    return;
+                }
+
+                string query = @"INSERT INTO Mahasiswa
+                                     (NIM, Nama, JenisKelamin, TanggalLahir, Alamat, KodeProdi, TanggalDaftar)
+                                 VALUES
+                                     (@NIM, @Nama, @JK, @TanggalLahir, @Alamat, @KodeProdi, @TanggalDaftar)";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@NIM", txtNIM.Text);
@@ -134,18 +158,19 @@ namespace CRUDMahasiswaADO
                 cmd.Parameters.AddWithValue("@TanggalLahir", dtpTanggalLahir.Value.Date);
                 cmd.Parameters.AddWithValue("@Alamat", txtAlamat.Text);
                 cmd.Parameters.AddWithValue("@KodeProdi", txtKodeProdi.Text);
+                cmd.Parameters.AddWithValue("@TanggalDaftar", DateTime.Now);
 
                 int result = cmd.ExecuteNonQuery();
 
                 if (result > 0)
                 {
-                    MessageBox.Show("Data berhasil diupdate");
+                    MessageBox.Show("Data mahasiswa berhasil ditambahkan");
                     ClearForm();
                     btnLoad.PerformClick();
                 }
                 else
                 {
-                    MessageBox.Show("Data tidak ditemukan");
+                    MessageBox.Show("Data gagal ditambahkan");
                 }
             }
             catch (Exception ex)
@@ -153,6 +178,8 @@ namespace CRUDMahasiswaADO
                 MessageBox.Show("Terjadi kesalahan: " + ex.Message);
             }
         }
+
+        
 
         // ───────────────────────────────────────────
         // DELETE DATA
