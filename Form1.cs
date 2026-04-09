@@ -228,13 +228,7 @@ namespace CRUDMahasiswaADO
 
        
 
-        // ───────────────────────────────────────────
-        // CELL CLICK – ISI FORM DARI GRID
-        // ───────────────────────────────────────────
-        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            
-        }
+        
 
         // ───────────────────────────────────────────
         // CLEAR FORM
